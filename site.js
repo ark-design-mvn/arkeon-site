@@ -17,7 +17,7 @@ var EMAIL = "hello@arkeon.co.za";
     toggle.addEventListener("click", function () {
       var open = nav.classList.toggle("open");
       toggle.setAttribute("aria-expanded", open ? "true" : "false");
-      toggle.textContent = open ? "Close" : "Menu";
+      toggle.setAttribute("aria-label", open ? "Close menu" : "Open menu");
     });
   }
 
@@ -166,6 +166,28 @@ var EMAIL = "hello@arkeon.co.za";
       var status = document.getElementById("form-status");
       status.textContent = "Your email app should open with this message ready to send. If it doesn't, email " + EMAIL + " directly.";
       window.location.href = "mailto:" + EMAIL + "?subject=" + encodeURIComponent(subject) + "&body=" + encodeURIComponent(body);
+    });
+  }
+  // ---------- Work page: status filter and grid/list view ----------
+  var work = document.querySelector("[data-work]");
+  if (work) {
+    var filterBtns = work.querySelectorAll("[data-filter]");
+    var viewBtns = work.querySelectorAll("[data-view]");
+    var items = work.querySelectorAll("[data-group]");
+    var panels = work.querySelectorAll("[data-panel]");
+    filterBtns.forEach(function (b) {
+      b.addEventListener("click", function () {
+        var f = b.getAttribute("data-filter");
+        filterBtns.forEach(function (x) { x.setAttribute("aria-pressed", x === b ? "true" : "false"); });
+        items.forEach(function (el) { el.hidden = !(f === "all" || el.getAttribute("data-group") === f); });
+      });
+    });
+    viewBtns.forEach(function (b) {
+      b.addEventListener("click", function () {
+        var v = b.getAttribute("data-view");
+        viewBtns.forEach(function (x) { x.setAttribute("aria-pressed", x === b ? "true" : "false"); });
+        panels.forEach(function (p) { p.hidden = p.getAttribute("data-panel") !== v; });
+      });
     });
   }
 })();
